@@ -84,7 +84,7 @@ export function EditableArticleComments({ slug, comments = [] }: { slug: string;
         <textarea
           value={text}
           onChange={(event) => setText(event.target.value)}
-          placeholder="Share your thoughts…"
+          placeholder="Share your thoughts..."
           rows={3}
           maxLength={1500}
           className="mt-3 w-full resize-y rounded-lg border border-[var(--tk-line)] bg-[var(--tk-bg)] px-4 py-3 text-sm leading-6 text-[var(--tk-text)] outline-none transition focus:border-[var(--tk-accent)]"
