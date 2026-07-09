@@ -152,7 +152,15 @@ function DetailMeta({ post, category }: { post: SitePost; category?: string }) {
   )
 }
 
+function hasUniqueBody(post: SitePost) {
+  const bodyPlain = stripHtml(bodyOf(post)).toLowerCase()
+  const summaryPlain = summaryOf(post).toLowerCase()
+  if (!bodyPlain) return false
+  return bodyPlain !== summaryPlain
+}
+
 function BodyContent({ post, compact = false }: { post: SitePost; compact?: boolean }) {
+  if (!hasUniqueBody(post)) return null
   return (
     <div
       className={`article-content mt-8 max-w-none ${compact ? 'text-[15px] leading-7' : 'text-[1.03rem] leading-8'}`}
@@ -254,7 +262,7 @@ function ArticleDetail({ post, related, comments }: { post: SitePost; related: S
     <>
       <HeroBlock task="article" post={post} eyebrow="Article" />
       <section className="mx-auto max-w-[var(--editable-container)] px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_340px]">
           <article className="min-w-0 rounded-[2rem] border border-[var(--tk-line)] bg-white/[0.03] p-6 sm:p-8">
             <BodyContent post={post} />
             {adSlot ? (
@@ -290,15 +298,19 @@ function ListingDetail({ post, related }: { post: SitePost; related: SitePost[] 
   const email = fieldOf(post, ['email'])
   const website = fieldOf(post, ['website', 'url'])
   const adSlot = detailAdSlotByTask.listing
+  const infoItems: Array<[string, string, typeof MapPin]> = [['Location', address, MapPin], ['Phone', phone, Phone], ['Email', email, Mail], ['Website', website, Globe2]]
+  const hasArticle = hasUniqueBody(post) || infoItems.some(([, value]) => value)
   return (
     <>
       <HeroBlock task="listing" post={post} eyebrow="Business listing" />
       <section className="mx-auto max-w-[var(--editable-container)] px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px]">
-          <article className="min-w-0 rounded-[2rem] border border-[var(--tk-line)] bg-white/[0.03] p-6 sm:p-8">
-            <DetailInfoGrid items={[['Location', address, MapPin], ['Phone', phone, Phone], ['Email', email, Mail], ['Website', website, Globe2]]} />
-            <BodyContent post={post} />
-          </article>
+        <div className={hasArticle ? 'grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_360px]' : 'mx-auto grid max-w-md gap-6'}>
+          {hasArticle ? (
+            <article className="min-w-0 rounded-[2rem] border border-[var(--tk-line)] bg-white/[0.03] p-6 sm:p-8">
+              <DetailInfoGrid items={infoItems} />
+              <BodyContent post={post} />
+            </article>
+          ) : null}
           <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
             <ActionPanel website={website} phone={phone} email={email} />
             {adSlot ? (
@@ -323,11 +335,12 @@ function ClassifiedDetail({ post, related }: { post: SitePost; related: SitePost
   const phone = fieldOf(post, ['phone', 'telephone', 'mobile'])
   const email = fieldOf(post, ['email'])
   const website = fieldOf(post, ['website', 'url'])
+  const showBody = hasUniqueBody(post)
   return (
     <>
       <HeroBlock task="classified" post={post} eyebrow="Classified" />
       <section className="mx-auto max-w-[var(--editable-container)] px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[320px_minmax(0,1fr)]">
+        <div className={showBody ? 'grid items-start gap-10 lg:grid-cols-[320px_minmax(0,1fr)]' : 'mx-auto grid max-w-2xl gap-6'}>
           <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
             <div className="rounded-[1.8rem] border border-[var(--tk-line)] bg-white/[0.03] p-6">
               <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--tk-accent)]">Offer overview</p>
@@ -336,9 +349,11 @@ function ClassifiedDetail({ post, related }: { post: SitePost; related: SitePost
             </div>
             <ActionPanel website={website} phone={phone} email={email} />
           </aside>
-          <article className="min-w-0 rounded-[2rem] border border-[var(--tk-line)] bg-white/[0.03] p-6 sm:p-8">
-            <BodyContent post={post} />
-          </article>
+          {showBody ? (
+            <article className="min-w-0 rounded-[2rem] border border-[var(--tk-line)] bg-white/[0.03] p-6 sm:p-8">
+              <BodyContent post={post} />
+            </article>
+          ) : null}
         </div>
       </section>
       <RelatedStrip task="classified" related={related} />
@@ -359,9 +374,11 @@ function ImageDetail({ post, related }: { post: SitePost; related: SitePost[] })
             </figure>
           ))}
         </div>
-        <div className="mt-8 rounded-[2rem] border border-[var(--tk-line)] bg-white/[0.03] p-6 sm:p-8">
-          <BodyContent post={post} compact />
-        </div>
+        {hasUniqueBody(post) ? (
+          <div className="mt-8 rounded-[2rem] border border-[var(--tk-line)] bg-white/[0.03] p-6 sm:p-8">
+            <BodyContent post={post} compact />
+          </div>
+        ) : null}
       </section>
       <RelatedStrip task="image" related={related} />
     </>
@@ -370,6 +387,15 @@ function ImageDetail({ post, related }: { post: SitePost; related: SitePost[] })
 
 function BookmarkDetail({ post, related }: { post: SitePost; related: SitePost[] }) {
   const website = fieldOf(post, ['website', 'url', 'link'])
+  const showBody = hasUniqueBody(post)
+  if (!website && !showBody) {
+    return (
+      <>
+        <HeroBlock task="sbm" post={post} eyebrow="Saved resource" />
+        <RelatedStrip task="sbm" related={related} />
+      </>
+    )
+  }
   return (
     <>
       <HeroBlock task="sbm" post={post} eyebrow="Saved resource" />
@@ -387,11 +413,13 @@ function BookmarkDetail({ post, related }: { post: SitePost; related: SitePost[]
 
 function PdfDetail({ post, related }: { post: SitePost; related: SitePost[] }) {
   const fileUrl = fieldOf(post, ['fileUrl', 'pdfUrl', 'documentUrl', 'url'])
+  const hasArticle = hasUniqueBody(post) || Boolean(fileUrl)
   return (
     <>
       <HeroBlock task="pdf" post={post} eyebrow="Document" />
       <section className="mx-auto max-w-[var(--editable-container)] px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className={hasArticle ? 'grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_320px]' : 'mx-auto grid max-w-md gap-6'}>
+          {hasArticle ? (
           <article className="min-w-0 rounded-[2rem] border border-[var(--tk-line)] bg-white/[0.03] p-6 sm:p-8">
             <BodyContent post={post} />
             {fileUrl ? (
@@ -404,6 +432,7 @@ function PdfDetail({ post, related }: { post: SitePost; related: SitePost[] }) {
               </div>
             ) : null}
           </article>
+          ) : null}
           <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
             <InfoCard title="Document notes" icon={FileText}>
               Open the document in a new tab or preview it directly here when a file URL is available.
