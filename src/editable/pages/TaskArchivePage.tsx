@@ -118,6 +118,7 @@ export function TaskArchiveView({
   const categoryLabel = category === 'all' ? 'All categories' : CATEGORY_OPTIONS.find((item) => item.slug === category)?.name || category
   const featured = posts[0]
   const spotlight = posts.slice(1, 4)
+  const gridPosts = featured ? posts.slice(1 + spotlight.length) : posts
   const adSlot = archiveAdSlotByTask[task]
 
   return (
@@ -192,13 +193,13 @@ export function TaskArchiveView({
               <Ads slot={adSlot} showLabel eager className="mx-auto w-full" />
             </div>
           ) : null}
-          {posts.length ? (
+          {gridPosts.length ? (
             <div className={task === 'listing' ? 'grid gap-5 xl:grid-cols-2' : task === 'classified' ? 'grid gap-5 md:grid-cols-2 xl:grid-cols-3' : task === 'image' ? 'columns-1 gap-5 [column-fill:_balance] sm:columns-2 xl:columns-3' : 'grid gap-5 md:grid-cols-2 xl:grid-cols-3'}>
-              {posts.map((post, index) => (
+              {gridPosts.map((post, index) => (
                 <ArchivePostCard key={post.id || post.slug || post.title} task={task} post={post} basePath={basePath} index={index} />
               ))}
             </div>
-          ) : (
+          ) : posts.length ? null : (
             <div className="mx-auto max-w-xl rounded-[2rem] border border-dashed border-[var(--tk-line)] bg-white/[0.03] px-8 py-16 text-center">
               <Search className="mx-auto h-7 w-7 text-[var(--tk-muted)]" />
               <h2 className="editable-display mt-5 text-3xl font-extrabold tracking-[-0.04em]">Nothing here yet</h2>
