@@ -23,15 +23,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const searchPageStyle = {
-  '--tk-bg': '#fffba7',
-  '--tk-surface': '#ffffff',
-  '--tk-raised': '#fff2b9',
-  '--tk-text': '#3a2140',
-  '--tk-muted': '#7d5a87',
-  '--tk-line': 'rgba(255,97,248,0.18)',
-  '--tk-accent': '#ffea6c',
-  '--tk-accent-soft': 'rgba(255, 166, 251, 0.16)',
-  '--tk-on-accent': '#161616',
+  '--tk-bg': '#F5E9D8',
+  '--tk-surface': '#F5E9D8',
+  '--tk-raised': 'rgba(47, 164, 215, 0.12)',
+  '--tk-text': '#3E2C23',
+  '--tk-muted': '#6B5342',
+  '--tk-line': 'rgba(62, 44, 35, 0.22)',
+  '--tk-accent': '#1C6E93',
+  '--tk-accent-soft': 'rgba(231, 111, 46, 0.2)',
+  '--tk-on-accent': '#1B140D',
 } as CSSProperties
 
 const stripHtml = (value: string) => value.replace(/<[^>]*>/g, ' ')
