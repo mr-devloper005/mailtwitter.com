@@ -39,9 +39,9 @@ export function EditorialFeatureCard({ post, href, label = 'Featured read' }: { 
     <Link href={href} className={`group block min-w-0 overflow-hidden ${dc.surface.dark} ${dc.motion.lift}`}>
       <div className="relative min-h-[520px] p-6 sm:p-8 lg:min-h-[620px]">
         <img src={getEditablePostImage(post)} alt={post.title} className="absolute inset-0 h-full w-full object-cover opacity-55 transition duration-500 group-hover:scale-105" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(24,20,17,0.1),rgba(24,20,17,0.86))]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(62,44,35,0.1),rgba(62,44,35,0.86))]" />
         <div className="relative z-10 flex h-full min-h-[460px] flex-col justify-end lg:min-h-[560px]">
-          <span className={`${dc.type.eyebrow} ${pal.accentSoftText}`}>{label}</span>
+          <span className={`${dc.type.eyebrow} text-[var(--slot4-accent-fill)]`}>{label}</span>
           <h3 className="mt-5 max-w-3xl text-4xl font-black leading-[0.95] tracking-[-0.07em] sm:text-5xl lg:text-6xl">{post.title}</h3>
           <p className="mt-5 max-w-2xl text-sm leading-8 text-white/75 sm:text-base">{getEditableExcerpt(post, 190)}</p>
           <span className={`mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold ${pal.panelText}`}>

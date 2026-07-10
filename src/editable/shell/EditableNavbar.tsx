@@ -30,7 +30,7 @@ export function EditableNavbar() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--editable-border)] bg-[var(--editable-nav-bg)] text-[var(--editable-nav-text)] shadow-[0_18px_40px_rgba(26,49,44,0.24)] backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-[var(--editable-border)] bg-[var(--editable-nav-bg)] text-[var(--editable-nav-text)] shadow-[0_18px_40px_rgba(62,44,35,0.24)] backdrop-blur-md">
       <div className="border-b border-white/10 bg-black/20">
         <div className="mx-auto flex max-w-[var(--editable-container)] items-center justify-end gap-3 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--editable-nav-text)] sm:px-6 lg:px-8">
           <Link href={globalContent.nav.actions.primary.href} className="rounded-full px-3 py-1 transition hover:bg-white/10 hover:text-[var(--slot4-warm)]">
@@ -50,7 +50,7 @@ export function EditableNavbar() {
 
       <nav className="mx-auto flex min-h-[96px] max-w-[var(--editable-container)] items-center gap-6 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex shrink-0 items-center gap-4">
-          <span className="relative flex h-14 w-14 items-center justify-center rounded-[1.6rem] bg-[linear-gradient(135deg,var(--slot4-warm),var(--slot4-media-bg))] shadow-[0_12px_28px_rgba(26,49,44,0.32)] ring-1 ring-white/25">
+          <span className="relative flex h-14 w-14 items-center justify-center rounded-[1.6rem] bg-[linear-gradient(135deg,var(--slot4-warm),var(--slot4-media-bg))] shadow-[0_12px_28px_rgba(62,44,35,0.32)] ring-1 ring-white/25">
             <span className="absolute inset-[5px] rounded-[1.2rem] bg-[var(--slot4-cream)]" />
             <span className="relative z-10 flex h-9 w-9 items-center justify-center rounded-[0.95rem] bg-[var(--slot4-accent-soft)] ring-1 ring-[var(--editable-border)]">
               <img src="/favicon.png?v=20260413" alt={SITE_CONFIG.name} className="h-6 w-6 object-contain mix-blend-multiply" />
