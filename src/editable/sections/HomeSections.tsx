@@ -59,15 +59,15 @@ function FeaturedOverlayCard({ post, href, large = false }: { post: SitePost; hr
   return (
     <Link href={href} className={`group relative block overflow-hidden rounded-[2rem] border border-white/8 bg-white/5 ${large ? 'min-h-[420px]' : 'min-h-[200px]'}`}>
       <img src={getEditablePostImage(post)} alt={post.title} className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.06),rgba(0,0,0,0.82))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(62,44,35,0.06),rgba(62,44,35,0.82))]" />
       <div className="relative flex h-full flex-col justify-end p-5">
-        <span className="w-fit rounded-full bg-black/35 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--slot4-accent)]">
+        <span className="w-fit rounded-full bg-black/35 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--slot4-accent-fill)]">
           {getEditableCategory(post)}
         </span>
-        <h3 className={`mt-3 font-extrabold leading-tight tracking-[-0.04em] text-[var(--slot4-page-text)] ${large ? 'text-3xl sm:text-4xl' : 'text-[1.85rem]'}`}>
+        <h3 className={`mt-3 font-extrabold leading-tight tracking-[-0.04em] text-[var(--slot4-dark-text)] ${large ? 'text-3xl sm:text-4xl' : 'text-[1.85rem]'}`}>
           {post.title}
         </h3>
-        <p className="mt-2 line-clamp-2 max-w-lg text-sm leading-6 text-[var(--slot4-page-text)]/80">{getEditableExcerpt(post, large ? 180 : 120)}</p>
+        <p className="mt-2 line-clamp-2 max-w-lg text-sm leading-6 text-[var(--slot4-dark-text)]/80">{getEditableExcerpt(post, large ? 180 : 120)}</p>
       </div>
     </Link>
   )
@@ -78,11 +78,11 @@ function CompactFeatureCard({ post, href }: { post: SitePost; href: string }) {
     <Link href={href} className="group relative block overflow-hidden rounded-[1.7rem] border border-white/8 bg-white/5">
       <div className="relative aspect-[5/4] overflow-hidden">
         <img src={getEditablePostImage(post)} alt={post.title} className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.82))]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(62,44,35,0.04),rgba(62,44,35,0.82))]" />
       </div>
       <div className="absolute inset-x-0 bottom-0 p-4">
-        <h3 className="line-clamp-2 text-xl font-extrabold leading-tight tracking-[-0.03em] text-[var(--slot4-page-text)]">{post.title}</h3>
-        <p className="mt-1 text-sm font-semibold text-[var(--slot4-accent)]">{getEditableCategory(post)}</p>
+        <h3 className="line-clamp-2 text-xl font-extrabold leading-tight tracking-[-0.03em] text-[var(--slot4-dark-text)]">{post.title}</h3>
+        <p className="mt-1 text-sm font-semibold text-[var(--slot4-accent-fill)]">{getEditableCategory(post)}</p>
       </div>
     </Link>
   )
@@ -91,12 +91,12 @@ function CompactFeatureCard({ post, href }: { post: SitePost; href: string }) {
 function EditorialItem({ post, href, index }: { post: SitePost; href: string; index: number }) {
   return (
     <Link href={href} className="group flex items-start gap-4 border-t border-white/8 py-5 first:border-t-0 first:pt-0">
-      <span className="editable-display shrink-0 text-4xl font-extrabold leading-none text-[var(--slot4-soft-muted-text)]">{index + 1}</span>
+      <span className="editable-display shrink-0 text-4xl font-extrabold leading-none text-[var(--slot4-dark-muted-text)]">{index + 1}</span>
       <div>
-        <h3 className="text-2xl font-extrabold leading-tight tracking-[-0.04em] text-[var(--slot4-page-text)] group-hover:text-[var(--slot4-accent-fill)]">
+        <h3 className="text-2xl font-extrabold leading-tight tracking-[-0.04em] text-[var(--slot4-dark-text)] group-hover:text-[var(--slot4-accent-fill)]">
           {post.title}
         </h3>
-        <p className="mt-2 text-sm text-[var(--slot4-soft-muted-text)]">By {SITE_CONFIG.name}</p>
+        <p className="mt-2 text-sm text-[var(--slot4-dark-muted-text)]">By {SITE_CONFIG.name}</p>
       </div>
     </Link>
   )
@@ -109,9 +109,9 @@ function HorizontalCard({ post, href }: { post: SitePost; href: string }) {
         <img src={getEditablePostImage(post)} alt={post.title} className="aspect-[4/3] h-full w-full object-cover transition duration-500 group-hover:scale-105" />
       </div>
       <div className="min-w-0 py-2">
-        <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--slot4-accent)]">{dateLabel(post)}</p>
-        <h3 className="mt-3 text-[2rem] font-extrabold leading-[1.02] tracking-[-0.05em] text-[var(--slot4-page-text)]">{post.title}</h3>
-        <p className="mt-4 line-clamp-3 text-lg leading-8 text-[var(--slot4-muted-text)]">{getEditableExcerpt(post, 180)}</p>
+        <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--slot4-accent-fill)]">{dateLabel(post)}</p>
+        <h3 className="mt-3 text-[2rem] font-extrabold leading-[1.02] tracking-[-0.05em] text-[var(--slot4-dark-text)]">{post.title}</h3>
+        <p className="mt-4 line-clamp-3 text-lg leading-8 text-[var(--slot4-dark-muted-text)]">{getEditableExcerpt(post, 180)}</p>
       </div>
     </Link>
   )
@@ -149,7 +149,7 @@ export function EditableHomeHero({ primaryTask, primaryRoute, posts, timeSection
           </div>
 
           <aside className="rounded-[2rem] border border-white/8 bg-white/[0.03] p-6">
-            <h2 className="editable-display text-4xl font-extrabold tracking-[-0.05em] text-[var(--slot4-page-text)]">Popular Articles</h2>
+            <h2 className="editable-display text-4xl font-extrabold tracking-[-0.05em] text-[var(--slot4-dark-text)]">Popular Articles</h2>
             <div className="mt-5">
               {popular.map((post, index) => (
                 <EditorialItem key={post.id || post.slug || post.title} post={post} href={postHref(primaryTask, post, primaryRoute)} index={index} />
@@ -167,7 +167,7 @@ export function EditableHomeHero({ primaryTask, primaryRoute, posts, timeSection
                 </label>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {chips.map((task) => (
-                    <Link key={task.key} href={task.route} className="rounded-full bg-white/55 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-[var(--slot4-page-text)] transition hover:bg-[var(--slot4-accent)] hover:text-[#191919]">
+                    <Link key={task.key} href={task.route} className="rounded-full bg-white/55 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-[var(--slot4-page-text)] transition hover:bg-[var(--slot4-accent)] hover:text-[#1B140D]">
                       {task.label}
                     </Link>
                   ))}
@@ -290,7 +290,7 @@ function CategoryLink({ name }: { name: string }) {
   )
 }
 
-export function EditableTimeCollections({ primaryTask, primaryRoute, posts, timeSections }: HomeSectionProps) {
+export function EditableTimeCollections({ primaryTask: _primaryTask, primaryRoute, posts, timeSections }: HomeSectionProps) {
   const pool = sectionPool(posts, timeSections)
   if (!pool.length) return null
 
@@ -332,23 +332,23 @@ export function EditableHomeCta() {
   return (
     <section className="border-t border-white/6 bg-[var(--slot4-dark-bg)]">
       <div className={`${container} py-16`}>
-        <div className="rounded-[2.4rem] border border-white/8 bg-[linear-gradient(135deg,rgba(255,234,108,0.18),rgba(255,97,248,0.14))] p-8 sm:p-10 lg:p-12">
-          <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-[var(--slot4-accent)]">{pagesContent.home.cta.badge}</p>
+        <div className="rounded-[2.4rem] border border-white/8 bg-[linear-gradient(135deg,rgba(47,164,215,0.18),rgba(231,111,46,0.14))] p-8 sm:p-10 lg:p-12">
+          <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-[var(--slot4-accent-fill)]">{pagesContent.home.cta.badge}</p>
           <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
-              <h2 className="editable-display max-w-3xl text-4xl font-extrabold leading-[1.03] tracking-[-0.05em] text-[var(--slot4-page-text)] sm:text-5xl">
+              <h2 className="editable-display max-w-3xl text-4xl font-extrabold leading-[1.03] tracking-[-0.05em] text-[var(--slot4-dark-text)] sm:text-5xl">
                 {pagesContent.home.cta.title}
               </h2>
-              <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--slot4-page-text)]/80">{pagesContent.home.cta.description}</p>
+              <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--slot4-dark-text)]/80">{pagesContent.home.cta.description}</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 {enabledTasks.map((task) => <TopicChip key={task.key} task={task} />)}
               </div>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Link href={pagesContent.home.cta.primaryCta.href} className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-extrabold text-[#191919] transition hover:bg-[var(--slot4-accent)]">
+              <Link href={pagesContent.home.cta.primaryCta.href} className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-extrabold text-[#1B140D] transition hover:bg-[var(--slot4-accent-fill)]">
                 {pagesContent.home.cta.primaryCta.label}
               </Link>
-              <Link href={pagesContent.home.cta.secondaryCta.href} className="inline-flex items-center gap-2 rounded-full border border-[var(--editable-border)] px-6 py-3 text-sm font-extrabold text-[var(--slot4-page-text)] transition hover:border-[var(--slot4-accent-fill)] hover:text-[var(--slot4-page-text)]">
+              <Link href={pagesContent.home.cta.secondaryCta.href} className="inline-flex items-center gap-2 rounded-full border border-[var(--editable-border)] px-6 py-3 text-sm font-extrabold text-[var(--slot4-dark-text)] transition hover:border-[var(--slot4-accent-fill)] hover:text-[var(--slot4-accent-fill)]">
                 {pagesContent.home.cta.secondaryCta.label} <ArrowRight className="h-4 w-4" />
               </Link>
             </div>

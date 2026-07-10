@@ -118,6 +118,7 @@ export function TaskArchiveView({
   const categoryLabel = category === 'all' ? 'All categories' : CATEGORY_OPTIONS.find((item) => item.slug === category)?.name || category
   const featured = posts[0]
   const spotlight = posts.slice(1, 4)
+  const gridPosts = featured ? posts.slice(1 + spotlight.length) : posts
   const adSlot = archiveAdSlotByTask[task]
 
   return (
@@ -151,7 +152,7 @@ export function TaskArchiveView({
                     <select
                       name="category"
                       defaultValue={category}
-                      className="h-12 w-full appearance-none rounded-full border border-[var(--tk-line)] bg-[#232428] px-4 pr-10 text-sm font-semibold text-[var(--tk-text)] outline-none"
+                      className="h-12 w-full appearance-none rounded-full border border-[var(--tk-line)] bg-[var(--tk-raised)] px-4 pr-10 text-sm font-semibold text-[var(--tk-text)] outline-none"
                       aria-label={voice.filterLabel}
                     >
                       <option value="all">All categories</option>
@@ -164,7 +165,7 @@ export function TaskArchiveView({
                   </button>
                 </form>
 
-                <div className="mt-5 rounded-[1.5rem] border border-[var(--tk-line)] bg-[#232428] p-4">
+                <div className="mt-5 rounded-[1.5rem] border border-[var(--tk-line)] bg-[var(--tk-raised)] p-4">
                   <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--tk-accent)]">Current archive</p>
                   <p className="mt-3 text-sm leading-7 text-[var(--tk-muted)]">
                     <span className="font-bold text-[var(--tk-text)]">{posts.length}</span> posts in {categoryLabel}. Page {page} of {pagination.totalPages || 1}.
@@ -192,13 +193,13 @@ export function TaskArchiveView({
               <Ads slot={adSlot} showLabel eager className="mx-auto w-full" />
             </div>
           ) : null}
-          {posts.length ? (
+          {gridPosts.length ? (
             <div className={task === 'listing' ? 'grid gap-5 xl:grid-cols-2' : task === 'classified' ? 'grid gap-5 md:grid-cols-2 xl:grid-cols-3' : task === 'image' ? 'columns-1 gap-5 [column-fill:_balance] sm:columns-2 xl:columns-3' : 'grid gap-5 md:grid-cols-2 xl:grid-cols-3'}>
-              {posts.map((post, index) => (
+              {gridPosts.map((post, index) => (
                 <ArchivePostCard key={post.id || post.slug || post.title} task={task} post={post} basePath={basePath} index={index} />
               ))}
             </div>
-          ) : (
+          ) : posts.length ? null : (
             <div className="mx-auto max-w-xl rounded-[2rem] border border-dashed border-[var(--tk-line)] bg-white/[0.03] px-8 py-16 text-center">
               <Search className="mx-auto h-7 w-7 text-[var(--tk-muted)]" />
               <h2 className="editable-display mt-5 text-3xl font-extrabold tracking-[-0.04em]">Nothing here yet</h2>
@@ -249,10 +250,10 @@ function FeatureArchiveCard({ task, post, basePath }: { task: TaskKey; post: Sit
         <span className="w-fit rounded-full bg-white/70 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[var(--tk-text)]">
           {categoryOf(post, task)}
         </span>
-        <h2 className="editable-display mt-4 max-w-2xl text-3xl font-extrabold leading-[1.02] tracking-[-0.05em] text-[var(--tk-text)] sm:text-4xl">
+        <h2 className="editable-display mt-4 max-w-2xl text-3xl font-extrabold leading-[1.02] tracking-[-0.05em] text-[var(--tk-scrim-text)] sm:text-4xl">
           {post.title}
         </h2>
-        <p className="mt-3 max-w-xl line-clamp-3 text-sm leading-7 text-[var(--tk-text)]/80">{summaryOf(post)}</p>
+        <p className="mt-3 max-w-xl line-clamp-3 text-sm leading-7 text-[var(--tk-scrim-text)]/80">{summaryOf(post)}</p>
       </div>
     </Link>
   )
@@ -384,8 +385,8 @@ function ImageArchiveCard({ post, href, index }: { post: SitePost; href: string;
         <img src={imageOf(post)} alt={post.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.0),rgba(0,0,0,0.82))]" />
         <div className="absolute inset-x-0 bottom-0 p-5">
-          <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--tk-accent)]">{categoryOf(post, 'Image')}</p>
-          <h2 className="mt-2 line-clamp-2 text-2xl font-extrabold leading-tight tracking-[-0.04em] text-[var(--tk-text)]">{post.title}</h2>
+          <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--tk-accent-fill,var(--tk-accent))]">{categoryOf(post, 'Image')}</p>
+          <h2 className="mt-2 line-clamp-2 text-2xl font-extrabold leading-tight tracking-[-0.04em] text-[var(--tk-scrim-text)]">{post.title}</h2>
         </div>
       </div>
     </Link>
