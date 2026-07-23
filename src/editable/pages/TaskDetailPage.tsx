@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
-  ArrowLeft, ArrowUpRight, Bookmark, Building2, Download, ExternalLink, FileText,
+  ArrowLeft, ArrowUpRight, Bookmark, Download, ExternalLink, FileText,
   Globe2, Mail, MapPin, Phone, Star, Tag, UserRound,
 } from 'lucide-react'
 import { buildPostMetadata, buildTaskMetadata } from '@/lib/seo'
@@ -312,15 +312,11 @@ function ListingDetail({ post, related }: { post: SitePost; related: SitePost[] 
             </article>
           ) : null}
           <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
-            <ActionPanel website={website} phone={phone} email={email} />
             {adSlot ? (
               <div className="mx-auto max-w-6xl px-4 py-6">
                 <Ads slot={adSlot} showLabel eager className="mx-auto w-full" />
               </div>
             ) : null}
-            <InfoCard title="Listing summary" icon={Building2}>
-              {summaryOf(post) || `${SITE_CONFIG.name} listing detail.`}
-            </InfoCard>
           </aside>
         </div>
       </section>
