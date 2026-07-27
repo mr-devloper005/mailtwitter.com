@@ -36,6 +36,7 @@ export async function EditableTaskDetailRoute({ task, params }: { task: TaskKey;
 const getContent = (post: SitePost) => (post.content && typeof post.content === 'object' ? post.content as Record<string, unknown> : {})
 const asText = (value: unknown) => (typeof value === 'string' ? value.trim() : '')
 const stripHtml = (value: string) => value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+const hasHtml = (value: string) => /<[a-z][\s\S]*>/i.test(value)
 const safeUrl = (value: string) => (/^https?:\/\//i.test(value) ? value : '#')
 
 const fieldOf = (post: SitePost, keys: string[]) => {
@@ -56,7 +57,14 @@ const imagesOf = (post: SitePost) => {
 }
 
 const bodyOf = (post: SitePost) => asText(getContent(post).body) || asText(getContent(post).description) || asText(getContent(post).details) || post.summary || 'Details will appear here once available.'
-const summaryOf = (post: SitePost) => stripHtml(post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || '')
+const summaryRawOf = (post: SitePost) => asText(post.summary) || asText(getContent(post).description) || asText(getContent(post).excerpt) || ''
+const summaryOf = (post: SitePost) => stripHtml(summaryRawOf(post))
+// The source description carries keyword anchors, so keep its markup for display
+// instead of flattening it — summaryOf() stays plain for cards, metadata and comparisons.
+const summaryHtmlOf = (post: SitePost) => {
+  const raw = summaryRawOf(post)
+  return raw && hasHtml(raw) ? sanitizeHtml(raw) : ''
+}
 const categoryOf = (post: SitePost, fallback: string) => asText(getContent(post).category) || post.tags?.[0] || fallback
 
 const escapeHtml = (value: string) => value
@@ -66,10 +74,19 @@ const escapeHtml = (value: string) => value
   .replace(/"/g, '&quot;')
   .replace(/'/g, '&#39;')
 
+// Feed markup is trusted enough to keep inline links, but not enough to run scripts.
+const sanitizeHtml = (html: string) => html
+  .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+  .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+  .replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, '')
+  .replace(/<object[^>]*>[\s\S]*?<\/object>/gi, '')
+  .replace(/\son[a-z]+\s*=\s*(['"]).*?\1/gi, '')
+  .replace(/\shref\s*=\s*(['"])\s*javascript:.*?\1/gi, ' href="#"')
+
 const formatPlainText = (raw: string) => {
   const value = raw.trim()
   if (!value) return ''
-  if (/<[a-z][\s\S]*>/i.test(value)) return value
+  if (hasHtml(value)) return sanitizeHtml(value)
   return value
     .split(/\n{2,}/)
     .map((part) => `<p>${escapeHtml(part).replace(/\n/g, '<br />')}</p>`)
@@ -171,6 +188,7 @@ function BodyContent({ post, compact = false }: { post: SitePost; compact?: bool
 
 function HeroBlock({ task, post, eyebrow }: { task: TaskKey; post: SitePost; eyebrow: string }) {
   const image = imagesOf(post)[0]
+  const summaryHtml = summaryHtmlOf(post)
   return (
     <section className="border-b border-[var(--tk-line)]">
       <div className="mx-auto max-w-[var(--editable-container)] px-4 py-10 sm:px-6 lg:px-8">
@@ -181,7 +199,14 @@ function HeroBlock({ task, post, eyebrow }: { task: TaskKey; post: SitePost; eye
             <h1 className="editable-display mt-4 text-4xl font-extrabold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-[4rem]">
               {post.title}
             </h1>
-            <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--tk-muted)]">{summaryOf(post) || 'Explore the full details below.'}</p>
+            {summaryHtml ? (
+              <div
+                className="editable-lede mt-5 max-w-3xl text-lg leading-8 text-[var(--tk-muted)]"
+                dangerouslySetInnerHTML={{ __html: summaryHtml }}
+              />
+            ) : (
+              <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--tk-muted)]">{summaryOf(post) || 'Explore the full details below.'}</p>
+            )}
             <DetailMeta post={post} category={fieldOf(post, ['category']) || categoryOf(post, eyebrow)} />
           </div>
           <div className="overflow-hidden rounded-[2rem] border border-[var(--tk-line)] bg-white/5">
