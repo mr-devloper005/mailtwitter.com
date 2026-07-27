@@ -117,6 +117,28 @@ body {
   text-underline-offset: 0.16em;
 }
 
+.editable-lede > * + * {
+  margin-top: 0.9rem;
+}
+
+.editable-lede a {
+  color: var(--slot4-accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--slot4-accent-fill) 70%, transparent);
+  text-underline-offset: 0.16em;
+  transition: color 0.15s ease;
+}
+
+.editable-lede a:hover {
+  color: var(--slot4-accent-fill);
+}
+
+.editable-lede a b,
+.editable-lede a strong {
+  font-weight: inherit;
+}
+
 ::selection {
   background: color-mix(in oklab, var(--slot4-accent-fill) 35%, transparent);
   color: #1B140D;
